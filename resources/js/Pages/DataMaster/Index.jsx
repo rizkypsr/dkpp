@@ -204,6 +204,35 @@ export default function Index({ auth, dataMaster, options }) {
         }
     };
 
+    const handleCreateJabatan = (inputValue) => {
+        router.post(
+            route("jabatan.store"),
+            {
+                nama: inputValue,
+            },
+            {
+                onSuccess: (response) => {
+                    const newOption = response.props.options.find(
+                        (option) => option.label === inputValue
+                    );
+
+                    if (newOption) {
+                        setData((prev) => ({
+                            ...prev,
+                            jabatan: {
+                                value: newOption.value,
+                                label: newOption.label,
+                            },
+                        }));
+                    }
+                },
+                onError: (error) => {
+                    console.error(error);
+                },
+            }
+        );
+    };
+
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this data?")) {
             destroy(route("data-master.destroy", id), {
@@ -217,11 +246,11 @@ export default function Index({ auth, dataMaster, options }) {
         }
     };
 
+    console.log(errors);
+
     if (!data.feedback) {
         data.penilaianKeJabatan = [];
     }
-
-    console.log(dataMaster);
 
     return (
         <AuthenticatedLayout user={auth.user} title="Data Master">
@@ -337,6 +366,7 @@ export default function Index({ auth, dataMaster, options }) {
                                         jabatan: value,
                                     }));
                                 }}
+                                onCreateOption={handleCreateJabatan}
                             />
 
                             <InputError
