@@ -97,7 +97,7 @@ class DataMasterController extends Controller
 
             $dataMaster = DataMaster::create([
                 'users_id' => $user->id,
-                'feedback' => $request->feedback,
+                'feedback' => $request->feedback ? 1 : 0,
             ]);
 
             if ($request->penilaianKeJabatan) {
@@ -190,7 +190,7 @@ class DataMasterController extends Controller
 
             $dataMaster->update([
                 'users_id' => $user->id,
-                'feedback' => $request->feedback,
+                'feedback' => $request->feedback ? 1 : 0,
             ]);
 
             foreach ($penilaianKeJabatan as $penilaian) {
