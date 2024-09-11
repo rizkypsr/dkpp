@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('data-laporan-monev-renaksi/rencana-aksi/{id}', [MonevRenaksiController::class, 'rencanaAksi'])->name('data-laporan-monev-renaksi.rencana-aksi');
     Route::resource('data-laporan-monev-renaksi', MonevRenaksiController::class);
+
+    Route::put('data-laporan-monev-renaksi/rencana-aksi/feedback/{id}/edit', [RencanaAksiController::class, 'updateFeedback'])->name('data-laporan-monev-renaksi.rencana-aksi.update-feedback');
     Route::resource('data-laporan-monev-renaksi.rencana-aksi', RencanaAksiController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

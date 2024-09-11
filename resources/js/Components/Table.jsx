@@ -17,7 +17,7 @@ export default function Table({ columns, rows }) {
     return (
         <>
             <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+                <table className="w-full text-sm text-left text-gray-500 rtl:text-right">
                     <thead className="text-xs text-[#B5B5C3] uppercase border-b border-dashed font-semibold tracking-wider">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <tr key={headerGroup.id}>

@@ -48,9 +48,6 @@ export default function Index({ id, auth, dataRencanaAksi }) {
             {
                 header: "No",
                 id: "rowNumber",
-                size: 100, // Default width
-                minSize: 50, // Minimum width
-                maxSize: 150, // Maximum width
                 cell: (info) => {
                     const rowNumber =
                         (dataRencanaAksi.current_page - 1) *
@@ -70,9 +67,6 @@ export default function Index({ id, auth, dataRencanaAksi }) {
             {
                 accessorKey: "target",
                 header: "Target",
-                size: 200,
-                minSize: 100,
-                maxSize: 300,
             },
             {
                 accessorKey: "realisasi",
@@ -99,10 +93,20 @@ export default function Index({ id, auth, dataRencanaAksi }) {
             {
                 accessorKey: "feedback",
                 header: "Feedback",
+                cell: (info) => {
+                    return <div className="w-32">{info.getValue() ?? "-"}</div>;
+                },
             },
             {
-                accessorKey: "feedbackBy",
+                accessorKey: "feedback_by",
                 header: "FeedbackBy",
+                cell: (info) => {
+                    return (
+                        <div className="w-32">
+                            {info.getValue()?.name ?? "-"}
+                        </div>
+                    );
+                },
             },
             {
                 header: "Bukti Pendukung",
@@ -185,6 +189,9 @@ export default function Index({ id, auth, dataRencanaAksi }) {
         if (flash.error) {
             toast.error(flash.error);
         }
+
+        flash.success = null;
+        flash.error = null;
     }, [flash]);
 
     const submit = (e) => {

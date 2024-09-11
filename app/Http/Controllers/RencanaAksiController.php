@@ -15,7 +15,7 @@ class RencanaAksiController extends Controller
      */
     public function index($id)
     {
-        $dataRencanaAksi = RencanaAksi::where('data_laporan_monev_renaksi_id', $id)->with([])->paginate(10);
+        $dataRencanaAksi = RencanaAksi::where('data_laporan_monev_renaksi_id', $id)->with(['feedbackBy'])->paginate(10);
 
         return Inertia::render('MonevRenaksi/RencanaAksi/Index', [
             'id' => $id,
@@ -193,6 +193,32 @@ class RencanaAksiController extends Controller
             $rencanaAksi->delete();
 
             return redirect()->back()->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function updateFeedback(Request $request, string $id)
+    {
+
+        $validated = $request->validate([
+            'feedback' => 'required|max:255',
+        ], [
+            'feedback.required' => 'Feedback wajib diisi',
+            'feedback.max' => 'Feedback maksimal 255 karakter',
+        ]);
+
+        try {
+            $rencanaAksi = RencanaAksi::findOrFail($id);
+
+            $rencanaAksi->update([
+                'feedback' => $validated['feedback'],
+                'feedback_by' => auth()->user()->id,
+            ]);
+
+            return redirect()->route('data-laporan-monev-renaksi.rencana-aksi.index', $rencanaAksi->data_laporan_monev_renaksi_id)->with('success', 'Berhasil memberikan feedback');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors([
                 'error' => $e->getMessage(),
