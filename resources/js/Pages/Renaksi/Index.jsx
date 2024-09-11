@@ -33,32 +33,7 @@ const columns = [
     },
 ];
 
-const data = {
-    data: [
-        {
-            kinerja: "Kinerja 1",
-            indikator: "Indikator Kinerja 1",
-        },
-        {
-            kinerja: "Kinerja 2",
-            indikator: "Indikator Kinerja 2",
-        },
-        {
-            kinerja: "Kinerja 3",
-            indikator: "Indikator Kinerja 3",
-        },
-        {
-            kinerja: "Kinerja 4",
-            indikator: "Indikator Kinerja 4",
-        },
-        {
-            kinerja: "Kinerja 5",
-            indikator: "Indikator Kinerja 5",
-        },
-    ],
-};
-
-export default function Index() {
+export default function Index({ dataRenaksi }) {
     return (
         <AuthenticatedLayout title="Data Laporan Renaksi">
             <div className="p-10 bg-white">

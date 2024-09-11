@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataMaster;
+use App\Models\DataMasterPenilaianJabatan;
 use App\Models\Jabatan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class DataMasterController extends Controller
@@ -48,21 +50,72 @@ class DataMasterController extends Controller
             'nip' => 'required|numeric|unique:users,nip',
             'name' => 'required|max:255',
             'password' => 'required|min:8',
-            'jabatan' => 'required|exists:jabatan,id',
-            'penilaianKeJabatan' => 'required|array',
+            'jabatan' => 'required',
+            'feedback' => 'nullable',
+            'penilaianKeJabatan' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $request->feedback;
+                }),
+            ],
+        ], [
+            'nip.required' => 'NIP wajib diisi',
+            'nip.numeric' => 'NIP harus berupa angka',
+            'nip.unique' => 'NIP sudah terdaftar',
+            'name.required' => 'Nama wajib diisi',
+            'name.max' => 'Nama maksimal 255 karakter',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 8 karakter',
+            'jabatan.required' => 'Jabatan wajib dipilih',
+            'penilaianKeJabatan.required' => 'Jabatan wajib dipilih jika ingin memberikan feedback',
         ]);
 
-        // $user = User::create([
-        //     'nip' => $request->nip,
-        //     'username' => $request->nip,
-        //     'name' => $request->name,
-        //     'password' => Hash::make('password'),
-        //     'jabatan_id' => $request->jabatan,
-        // ]);
+        try {
+            // check if jabatan is string then create new jabatan
+            if (is_string($validated['jabatan'])) {
+                $jabatan = Jabatan::create([
+                    'nama' => $validated['jabatan'],
+                ]);
 
-        // dd($user);
+                $validated['jabatan'] = $jabatan->id;
+            }
 
-        // create data master
+            $jabatan = Jabatan::find($validated['jabatan']);
+
+            if (! $jabatan) {
+                return redirect()->back()->withErrors([
+                    'jabatan' => 'Jabatan tidak ditemukan',
+                ]);
+            }
+
+            $user = User::create([
+                'nip' => $request->nip,
+                'username' => $request->nip,
+                'name' => $request->name,
+                'password' => Hash::make($validated['password']),
+                'jabatan_id' => $validated['jabatan'],
+            ]);
+
+            $dataMaster = DataMaster::create([
+                'users_id' => $user->id,
+                'feedback' => $request->feedback,
+            ]);
+
+            if ($request->penilaianKeJabatan) {
+                foreach ($validated['penilaianKeJabatan'] as $penilaian) {
+                    DataMasterPenilaianJabatan::create([
+                        'penilaian_ke_jabatan' => $penilaian,
+                        'data_master_id' => $dataMaster->id,
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Data berhasil disimpan');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -78,7 +131,11 @@ class DataMasterController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $dataMaster = DataMaster::findOrFail($id);
+
+        return Inertia::render('DataMaster/Index', [
+            'dataMaster' => $dataMaster,
+        ]);
     }
 
     /**
@@ -86,7 +143,77 @@ class DataMasterController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $dataMaster = DataMaster::findOrFail($id);
+        $user = User::findOrFail($dataMaster->users_id);
+
+        $validated = $request->validate([
+            'nip' => [
+                'required',
+                'numeric',
+                Rule::unique('users', 'nip')->ignore($user->id),
+            ],
+            'name' => 'required|max:255',
+            'password' => 'nullable|min:8',
+            'jabatan' => 'required',
+            'feedback' => 'nullable',
+            'penilaianKeJabatan' => [
+                Rule::requiredIf(function () use ($request) {
+                    return $request->feedback;
+                }),
+            ],
+        ], [
+            'nip.required' => 'NIP wajib diisi',
+            'nip.numeric' => 'NIP harus berupa angka',
+            'nip.unique' => 'NIP sudah terdaftar',
+            'name.required' => 'Nama wajib diisi',
+            'name.max' => 'Nama maksimal 255 karakter',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 8 karakter',
+            'jabatan.required' => 'Jabatan wajib dipilih',
+            'penilaianKeJabatan.required' => 'Jabatan wajib dipilih jika ingin memberikan feedback',
+        ]);
+
+        try {
+            $penilaianKeJabatan = DataMasterPenilaianJabatan::where('data_master_id', $id)->get();
+
+            if ($validated['password']) {
+                $validated['password'] = Hash::make($validated['password']);
+            }
+
+            $user->update([
+                'nip' => $request->nip,
+                'name' => $request->name,
+                'password' => $validated['password'] ?? $user->password,
+                'jabatan_id' => $validated['jabatan'],
+            ]);
+
+            $dataMaster->update([
+                'users_id' => $user->id,
+                'feedback' => $request->feedback,
+            ]);
+
+            foreach ($penilaianKeJabatan as $penilaian) {
+                $penilaian->delete();
+            }
+
+            if ($request->penilaianKeJabatan) {
+                foreach ($validated['penilaianKeJabatan'] as $penilaian) {
+                    DataMasterPenilaianJabatan::create([
+                        'penilaian_ke_jabatan' => $penilaian,
+                        'data_master_id' => $dataMaster->id,
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Data berhasil diubah');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+
     }
 
     /**
@@ -94,6 +221,21 @@ class DataMasterController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $penilaianKeJabatan = DataMasterPenilaianJabatan::where('data_master_id', $id)->get();
+
+            foreach ($penilaianKeJabatan as $penilaian) {
+                $penilaian->delete();
+            }
+
+            DataMaster::destroy($id);
+
+            return redirect()->back()->with('success', 'Data berhasil dihapus');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }

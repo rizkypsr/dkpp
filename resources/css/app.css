@@ -13,3 +13,7 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+.full-width-uploader {
+    max-width: none !important;
+}

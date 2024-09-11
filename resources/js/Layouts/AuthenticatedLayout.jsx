@@ -6,6 +6,7 @@ import { Link } from "@inertiajs/react";
 import Sidebar from "@/Components/Sidebar";
 import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { ToastContainer } from "react-toastify";
 
 export default function Authenticated({ user, title, children }) {
     const [isSidebarOpen, setIsSidebarOpen] = React.useState(false); // Sidebar starts closed on mobile
@@ -43,7 +44,7 @@ export default function Authenticated({ user, title, children }) {
 
             {/* Main Content */}
             <div
-                className={`flex-1 min-h-screen transition-all duration-300 ease-in-out ${
+                className={`flex-1 min-h-screen transition-all duration-300 ease-in-out overflow-x-hidden ${
                     isSidebarOpen ? "ml-80" : "ml-0"
                 } lg:ml-80`}
             >
@@ -58,11 +59,15 @@ export default function Authenticated({ user, title, children }) {
                     <p className="text-lg font-semibold">{title}</p>
                     <Link
                         href={route("logout")}
-                        className="text-sm underline cursor-pointer"
+                        className="flex flex-col text-sm cursor-pointer"
                         method="post"
                         as="button"
                     >
-                        ADMIN
+                        {console.log(user)}
+                        <p>{user?.name ?? ""}</p>
+                        <p className="text-[#7E8299] text-xs">
+                            {user?.nip ?? ""}
+                        </p>
                     </Link>
                 </div>
 
@@ -71,6 +76,8 @@ export default function Authenticated({ user, title, children }) {
                     {children}
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     );
 }

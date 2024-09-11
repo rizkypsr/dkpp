@@ -15,6 +15,6 @@ class DataMasterPenilaianJabatan extends Model
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id');
+        return $this->belongsTo(Jabatan::class, 'penilaian_ke_jabatan');
     }
 }

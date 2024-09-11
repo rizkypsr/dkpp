@@ -12,34 +12,30 @@ const menuItems = [
         icon: DashboardIcon,
     },
     {
-        name: "Data Laporan",
-        link: "/data-laporan",
-        icon: DashboardIcon,
-        submenu: [
-            {
-                name: "Data Laporan Renaksi",
-                link: "/data-laporan-renaksi",
-            },
-            {
-                name: "Data Laporan Monev Renaksi",
-                link: "/data-laporan-monev-renaksi",
-            },
-            {
-                name: "Data Laporan Kurja",
-                link: "/data-laporan-kurja",
-            },
-        ],
-    },
-    {
-        name: "Data Laporan Kerja",
-        link: "/data-laporan-kerja",
+        name: "Data Laporan Renaksi",
+        link: "/data-laporan-renaksi",
         icon: DashboardIcon,
     },
     {
-        name: "Data Laporan Monev",
-        link: "/laporan-monev",
+        name: "Data Laporan Monev Renaksi",
+        link: "/data-laporan-monev-renaksi",
         icon: DashboardIcon,
     },
+    {
+        name: "Data Laporan Kurja",
+        link: "/data-laporan-kurja",
+        icon: DashboardIcon,
+    },
+    // {
+    //     name: "Data Laporan Kerja",
+    //     link: "/data-laporan-kerja",
+    //     icon: DashboardIcon,
+    // },
+    // {
+    //     name: "Data Laporan Monev",
+    //     link: "/laporan-monev",
+    //     icon: DashboardIcon,
+    // },
     {
         name: "Laporan",
         link: "/laporan",

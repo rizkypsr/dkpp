@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\DataMasterController;
-use App\Http\Controllers\KurjaController;
 use App\Http\Controllers\MonevRenaksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RenaksiController;
+use App\Http\Controllers\RencanaAksiController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,9 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/data-laporan-renaksi/tribulan/feedback', [RenaksiController::class, 'feedback'])->name('data-laporan-renaksi.feedback');
     Route::resource('data-laporan-renaksi', RenaksiController::class);
 
+    // Route::get('data-laporan-monev-renaksi/rencana-aksi/{id}', [MonevRenaksiController::class, 'rencanaAksi'])->name('data-laporan-monev-renaksi.rencana-aksi');
     Route::resource('data-laporan-monev-renaksi', MonevRenaksiController::class);
-
-    Route::resource('data-laporan-kurja', KurjaController::class);
+    Route::resource('data-laporan-monev-renaksi.rencana-aksi', RencanaAksiController::class);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

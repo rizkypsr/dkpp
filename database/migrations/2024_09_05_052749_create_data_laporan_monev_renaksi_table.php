@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_laporan_renaksi', function (Blueprint $table) {
+        Schema::create('data_laporan_monev_renaksi', function (Blueprint $table) {
             $table->id();
             $table->string('kinerja')->nullable();
             $table->string('indikator_kinerja_individu')->nullable();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_laporan_renaksi');
+        Schema::dropIfExists('data_laporan_monev_renaksi');
     }
 };
