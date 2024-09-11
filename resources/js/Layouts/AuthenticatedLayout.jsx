@@ -63,7 +63,6 @@ export default function Authenticated({ user, title, children }) {
                         method="post"
                         as="button"
                     >
-                        {console.log(user)}
                         <p>{user?.name ?? ""}</p>
                         <p className="text-[#7E8299] text-xs">
                             {user?.nip ?? ""}
