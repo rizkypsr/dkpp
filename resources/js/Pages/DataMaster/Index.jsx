@@ -17,6 +17,9 @@ import InputLabel from "@/Components/InputLabel";
 export default function Index({ auth, dataMaster, options }) {
     const [openCreateModal, setOpenCreateModal] = React.useState(false);
     const [mode, setMode] = React.useState("create");
+    const [loadingCreateJabatan, setLoadingCreateJabatan] =
+        React.useState(false);
+
     const {
         data,
         setData,
@@ -205,6 +208,7 @@ export default function Index({ auth, dataMaster, options }) {
     };
 
     const handleCreateJabatan = (inputValue) => {
+        setLoadingCreateJabatan(true);
         router.post(
             route("jabatan.store"),
             {
@@ -225,9 +229,11 @@ export default function Index({ auth, dataMaster, options }) {
                             },
                         }));
                     }
+                    setLoadingCreateJabatan(false);
                 },
                 onError: (error) => {
                     console.error(error);
+                    setLoadingCreateJabatan(false);
                 },
             }
         );
@@ -367,6 +373,8 @@ export default function Index({ auth, dataMaster, options }) {
                                     }));
                                 }}
                                 onCreateOption={handleCreateJabatan}
+                                isDisabled={loadingCreateJabatan}
+                                isLoading={loadingCreateJabatan}
                             />
 
                             <InputError
