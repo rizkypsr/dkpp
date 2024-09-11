@@ -208,10 +208,10 @@ export default function Index({ auth, dataMaster, options }) {
         if (confirm("Are you sure you want to delete this data?")) {
             destroy(route("data-master.destroy", id), {
                 onSuccess: () => {
-                    toast.success("Data berhasil dihapus");
+                    flash.success = null;
                 },
                 onError: () => {
-                    toast.error("Data gagal dihapus");
+                    flash.error = null;
                 },
             });
         }

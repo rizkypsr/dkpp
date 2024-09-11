@@ -156,10 +156,10 @@ export default function Index({ auth, dataMonevRenaksi }) {
         if (confirm("Are you sure you want to delete this data?")) {
             destroy(route("data-laporan-monev-renaksi.destroy", id), {
                 onSuccess: () => {
-                    toast.success("Data berhasil dihapus");
+                    flash.success = null;
                 },
                 onError: () => {
-                    toast.error("Data gagal dihapus");
+                    flash.error = null;
                 },
             });
         }

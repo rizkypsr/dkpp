@@ -231,10 +231,10 @@ export default function Index({ id, auth, dataRencanaAksi }) {
                 }),
                 {
                     onSuccess: () => {
-                        toast.success("Data berhasil dihapus");
+                        flash.success = null;
                     },
                     onError: () => {
-                        toast.error("Data gagal dihapus");
+                        flash.error = null;
                     },
                 }
             );
