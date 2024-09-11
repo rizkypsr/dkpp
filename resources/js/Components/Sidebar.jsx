@@ -24,7 +24,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         >
             {/* Sidebar Header */}
             <div className="flex items-center justify-between px-4 h-16 text-white bg-[#13131b]">
-                <h1 className="text-lg font-bold">DKPP</h1>
+                <Link href="/dashboard" className="text-lg font-bold">
+                    DKPP
+                </Link>
                 <button
                     className="text-white lg:hidden"
                     onClick={toggleSidebar}
