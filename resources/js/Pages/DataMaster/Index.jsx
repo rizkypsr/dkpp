@@ -72,7 +72,7 @@ export default function Index({ auth, dataMaster, options }) {
                 accessorKey: "feedback",
                 header: "Feedback",
                 cell: (info) => {
-                    return info.getValue() === 1 ? (
+                    return info.getValue() == 1 ? (
                         <div className="text-[#50cd89] bg-[#E8FFF3] rounded-sm text-xs py-1 font-bold w-16 text-center">
                             Ya
                         </div>
@@ -117,7 +117,7 @@ export default function Index({ auth, dataMaster, options }) {
                                                 label: row.users.jabatan.nama,
                                             },
                                             feedback:
-                                                row.feedback === 1
+                                                row.feedback == 1
                                                     ? true
                                                     : false,
                                             penilaianKeJabatan:
