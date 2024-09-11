@@ -117,7 +117,7 @@ export default function Index({ auth, dataMaster, options }) {
                                                 label: row.users.jabatan.nama,
                                             },
                                             feedback:
-                                                row.feedback === 1
+                                                row.feedback == 1
                                                     ? true
                                                     : false,
                                             penilaianKeJabatan:
