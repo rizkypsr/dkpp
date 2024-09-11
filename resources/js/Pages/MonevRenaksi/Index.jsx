@@ -217,7 +217,10 @@ export default function Index({ auth, dataMonevRenaksi }) {
                         </button>
                         <button
                             className="px-4 py-2 text-white bg-blue-500 rounded-lg"
-                            onClick={() => setOpenModal(true)}
+                            onClick={() => {
+                                setMode("create");
+                                setOpenModal(true);
+                            }}
                         >
                             Tambah Data
                         </button>

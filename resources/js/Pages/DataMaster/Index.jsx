@@ -258,7 +258,10 @@ export default function Index({ auth, dataMaster, options }) {
                         </button>
                         <button
                             className="px-4 py-2 text-white bg-blue-500 rounded-lg"
-                            onClick={() => setOpenCreateModal(true)}
+                            onClick={() => {
+                                setMode("create");
+                                setOpenCreateModal(true);
+                            }}
                         >
                             Tambah Data
                         </button>
