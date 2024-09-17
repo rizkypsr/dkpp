@@ -57,8 +57,22 @@ export default function Index({ dataKurja }) {
                         </Link>
                     );
                 },
-                size: 200,
             },
+            {
+                accessorKey: "penjelasan",
+                header: "Penjelasan",
+                cell: (info) => {
+                    return <div className="w-72">{info.getValue()}</div>;
+                },
+            },
+            {
+                accessorKey: "alternatif",
+                header: "ALTERNATIF/ UPAYA YANG TELAH DILAKUKAN",
+                cell: (info) => {
+                    return <div className="w-72">{info.getValue()}</div>;
+                },
+            },
+
             {
                 accessorKey: "actions",
                 header: "Aksi",
