@@ -1,13 +1,13 @@
-import Modal from "@/Components/Modal";
-import PrimaryButton from "@/Components/PrimaryButton";
-import Table from "@/Components/Table";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Link, useForm, usePage } from "@inertiajs/react";
 import React from "react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { toast } from "react-toastify";
+import { usePage } from "@inertiajs/react";
+import Table from "@/Components/Table";
 import Form from "./Form";
 
-export default function Index({ dataKurja }) {
+export default function Index({ kurjaId, dataKeterkaitanKurja }) {
+    console.log(kurjaId, dataKeterkaitanKurja);
+
     const { flash } = usePage().props;
 
     React.useEffect(() => {
@@ -24,40 +24,20 @@ export default function Index({ dataKurja }) {
     const columns = React.useMemo(
         () => [
             {
-                accessorKey: "kinerja",
-                header: "Kinerja",
+                accessorKey: "program",
+                header: "Nama Program/Kegiatan/Sub Kegiatan",
             },
             {
-                accessorKey: "indikator_kinerja_individu",
-                header: "Indikator Kinerja Individu",
+                accessorKey: "anggaran",
+                header: "Anggaran (Rp)",
             },
             {
-                accessorKey: "target",
-                header: "Target",
+                accessorKey: "realisasi_rupiah",
+                header: "Realisasi (Rp)",
             },
             {
-                accessorKey: "realisasi",
-                header: "Realisasi s.d Tribulan 1",
-            },
-            {
-                accessorKey: "capaian",
-                header: "Capaian (%)",
-            },
-            {
-                header: "Keterkaitan Dengan Komponen Perencanaan",
-                cell: (info) => {
-                    return (
-                        <Link
-                            href={route(
-                                "data-laporan-kurja.keterkaitan.index",
-                                info.row.original.id
-                            )}
-                        >
-                            <PrimaryButton>Lihat</PrimaryButton>
-                        </Link>
-                    );
-                },
-                size: 200,
+                accessorKey: "realisasi_persentase",
+                header: "Realisasi (%)",
             },
             {
                 accessorKey: "actions",
@@ -71,11 +51,11 @@ export default function Index({ dataKurja }) {
                 },
             },
         ],
-        [dataKurja.current_page, dataKurja.per_page]
+        [dataKeterkaitanKurja.current_page, dataKeterkaitanKurja.per_page]
     );
 
     return (
-        <AuthenticatedLayout title="Data Laporan Kurja">
+        <AuthenticatedLayout title="Data Laporan Kurja - Keterkaitan Dengan Komponen Perencanaan">
             <div className="p-10 bg-white">
                 <div className="flex items-center justify-between my-10">
                     {/* Search */}
@@ -111,7 +91,7 @@ export default function Index({ dataKurja }) {
                     </div>
                 </div>
 
-                <Table columns={columns} rows={dataKurja} />
+                <Table columns={columns} rows={dataKeterkaitanKurja} />
             </div>
         </AuthenticatedLayout>
     );

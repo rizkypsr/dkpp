@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\DataMasterController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\KeterkaitanKurjaController;
+use App\Http\Controllers\KurjaController;
 use App\Http\Controllers\MonevRenaksiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RenaksiController;
@@ -42,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('data-laporan-kurja.keterkaitan', KeterkaitanKurjaController::class);
+    Route::resource('data-laporan-kurja', KurjaController::class);
 
     Route::resource('jabatan', JabatanController::class);
 

@@ -13,6 +13,8 @@ import { FileUploader } from "react-drag-drop-files";
 import { toast } from "react-toastify";
 
 export default function Index({ id, auth, dataRencanaAksi }) {
+    console.log(dataRencanaAksi);
+
     const { flash } = usePage().props;
 
     const [openModal, setOpenModal] = React.useState(false);

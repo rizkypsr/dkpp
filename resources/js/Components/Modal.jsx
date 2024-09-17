@@ -31,7 +31,7 @@ export default function Modal({
             <Dialog
                 as="div"
                 id="modal"
-                className="fixed inset-0 z-50 flex items-center px-4 py-6 overflow-y-auto transition-all transform sm:px-0"
+                className="fixed inset-0 z-50 flex items-center justify-center h-screen px-4 py-6 overflow-hidden transition-all transform sm:px-0"
                 onClose={close}
             >
                 <TransitionChild
@@ -54,8 +54,8 @@ export default function Modal({
                     leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                     <DialogPanel
-                        className={`mb-6 bg-white rounded-lg shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
-                        style={{ position: "relative" }} // Ensure relative positioning
+                        className={`mb-6 bg-white rounded-lg shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass} max-h-[90vh] overflow-y-auto`}
+                        style={{ position: "relative" }}
                     >
                         {children}
                     </DialogPanel>
